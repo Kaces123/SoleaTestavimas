@@ -11,9 +11,9 @@ using Org.Ktu.Isk.P175B602.Autonuoma.Models;
 
 namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories
 {
-	public class LikedRepo
+	public class LikedRepo : ILikedRepo
 	{
-		public static List<Liked> List()
+		public List<Liked> List()
 		{
 			var Likeds = new List<Liked>();
 
@@ -35,7 +35,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories
 			return Likeds;
 		}
 		//This is used to find a Liked based on the id
-		public static Liked Find(int id, int idUser)
+		public Liked Find(int id, int idUser)
 		{
 			var Liked = new Liked();
 
@@ -58,7 +58,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories
 			return Liked;
 		}
 
-		public static Liked Find(int id, int idUser, int n)
+		public Liked Find(int id, int idUser, int n)
 		{
 			var Liked = new Liked();
 
@@ -83,7 +83,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories
 		//This is used to check when loggin in whether a Liked inputed a correct name and password
 		
 
-		public static void Update(int QuestionId, int AnswerId, int UserId, int Id, int likedOrDisliked)
+		public void Update(int QuestionId, int AnswerId, int UserId, int Id, int likedOrDisliked)
 		{			
 			var query = 
 				$@"UPDATE `{Config.TblPrefix}liked` 
@@ -104,7 +104,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories
 			});							
 		}
 
-		public static void Insert(int QuestionId, int AnswerId, int UserId, int Id, int likedOrDisliked)
+		public void Insert(int QuestionId, int AnswerId, int UserId, int Id, int likedOrDisliked)
 		{			
 				var query =
 				$@"INSERT INTO `{Config.TblPrefix}liked`
@@ -132,7 +132,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories
 			});
 		}
 
-		public static void Delete(int id)
+		public void Delete(int id)
 		{			
 			var query = $@"DELETE FROM `{Config.TblPrefix}liked` where id=?id";
 			Sql.Delete(query, args => {

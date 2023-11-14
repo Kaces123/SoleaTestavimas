@@ -16,10 +16,13 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 	public class QuestionController : Controller
 	{
 		private readonly IUserRepo _userRepo;
-
-		public QuestionController(IUserRepo userRepo)
+        private  IAnswerRepo _answerRepo;
+		private ILikedRepo _likedRepo;
+        public QuestionController(IUserRepo userRepo, IAnswerRepo answerRepo,ILikedRepo likedRepo)
 		{
-			_userRepo = userRepo;
+			_likedRepo = likedRepo;
+            _answerRepo = answerRepo;
+            _userRepo = userRepo;
 		}
 
 		/// <summary>
@@ -47,7 +50,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 		//using QuestionRepo.FindForDeletion() method finds the question and it's answers
 		public ActionResult Content(int id,int n)
 		{
-			var answerss = AnswerRepo.QuestionAnswers(id,n);
+			var answerss = _answerRepo.QuestionAnswers(id,n);
 			var questions = QuestionRepo.FindForDeletion(id);
 			var user = _userRepo.Find(Convert.ToInt32(TempData["id"]));
 			var vModel = new Answers();
@@ -60,33 +63,33 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 		//When like button pressed on main page, it reloads a page and adds or substracts likes count
 		public ActionResult Like(int id, string QuestiondUserId)
 		{
-			var match = LikedRepo.Find(id, Convert.ToInt32(TempData["id"]));
+			var match = _likedRepo.Find(id, Convert.ToInt32(TempData["id"]));
 			var user = _userRepo.Find(QuestiondUserId, 1);
-			var Liked = LikedRepo.List();
+			var Liked = _likedRepo.List();
 			int LikedId = 0;
 			if(Liked.Count==0)
 				LikedId=1;
 			else
-				LikedId = LikedRepo.List().Last().Id+1;
+				LikedId = _likedRepo.List().Last().Id+1;
 			var question=QuestionRepo.Find(id);
 			if(match.QuestionId != id){
 				question.Question.Likes+=1;
 				if(user.Id!=Convert.ToInt32(TempData["id"]))
 					user.Currency+=5;
-				LikedRepo.Insert(id, 0, Convert.ToInt32(TempData["id"]), LikedId, 1);
+				_likedRepo.Insert(id, 0, Convert.ToInt32(TempData["id"]), LikedId, 1);
 			}
 			else if(match.likedOrDisliked == 2 ){
 				question.Question.Likes+=1;
 				question.Question.Dislikes-=1;
 				if(user.Id!=Convert.ToInt32(TempData["id"]))
 					user.Currency+=5;
-				LikedRepo.Update(id, 0, Convert.ToInt32(TempData["id"]), match.Id, 1);
+				_likedRepo.Update(id, 0, Convert.ToInt32(TempData["id"]), match.Id, 1);
 			}
 			else{
 				if(user.Id!=Convert.ToInt32(TempData["id"]))
 					user.Currency-=5;
 				question.Question.Likes-=1;
-				LikedRepo.Delete(match.Id);
+				_likedRepo.Delete(match.Id);
 			}
 			_userRepo.Update(user);
 			QuestionRepo.Update(question);
@@ -95,29 +98,29 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 		//When dislike button pressed on main page, it reloads a page and adds or substracts dislikes count
 		public ActionResult Dislike(int id, string QuestiondUserId)
 		{
-			var match = LikedRepo.Find(id, Convert.ToInt32(TempData["id"]));
+			var match = _likedRepo.Find(id, Convert.ToInt32(TempData["id"]));
 			var user = _userRepo.Find(QuestiondUserId, 1);
-			var Liked = LikedRepo.List();
+			var Liked = _likedRepo.List();
 			int LikedId = 0;
 			if(Liked.Count==0)
 				LikedId=1;
 			else
-				LikedId = LikedRepo.List().Last().Id+1;
+				LikedId = _likedRepo.List().Last().Id+1;
 			var question=QuestionRepo.Find(id);
 			if(match.QuestionId != id){
 				question.Question.Dislikes+=1;
-				LikedRepo.Insert(id, 0, Convert.ToInt32(TempData["id"]), LikedId, 2);
+				_likedRepo.Insert(id, 0, Convert.ToInt32(TempData["id"]), LikedId, 2);
 			}
 			else if(match.likedOrDisliked == 1){
 				question.Question.Likes-=1;
 				question.Question.Dislikes+=1;
 				if(user.Id!=Convert.ToInt32(TempData["id"]))
 					user.Currency-=5;
-				LikedRepo.Update(id, 0, Convert.ToInt32(TempData["id"]), match.Id, 2);
+				_likedRepo.Update(id, 0, Convert.ToInt32(TempData["id"]), match.Id, 2);
 			}
 			else{
 				question.Question.Dislikes-=1;
-				LikedRepo.Delete(match.Id);
+				_likedRepo.Delete(match.Id);
 			}
 			_userRepo.Update(user);
 			QuestionRepo.Update(question);
@@ -130,9 +133,9 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 			if(question.Question.topAnswer==0){
 				question.Question.topAnswer=1;
 				QuestionRepo.Update(question);
-				var answer = AnswerRepo.Find(AnswerId);
+				var answer = _answerRepo.Find(AnswerId);
 				answer.Answer.best=1;
-				AnswerRepo.Update(answer);
+                _answerRepo.Update(answer);
 				var user = _userRepo.Find(answer.Answer.fk_User, 1);
 				user.Currency+=80;
 				_userRepo.Update(user);
