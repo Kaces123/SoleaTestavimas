@@ -10,7 +10,7 @@ namespace Solea.Tests;
 
 public class UserControllerTests
 {
-   private readonly Mock<IUserRepo> mockUserRepo;
+    private readonly Mock<IUserRepo> mockUserRepo;
     private readonly UserController controller;
     private readonly TempDataDictionary tempData;
     private readonly Mock<ITempDataProvider> tempDataProvider;
@@ -193,134 +193,155 @@ mockUserRepo.Setup(repo => repo.Find(It.Is<User>(u => u.Name == username && u.Pa
         Assert.Equal("Incorrect current password", controller.ModelState["currentPassword"].Errors[0].ErrorMessage);
     }
 
-  [Fact]
-        public void Index_Returns_ViewResult()
+    [Fact]
+    public void Index_Returns_ViewResult()
+    {
+        // Arrange
+        var controller = new HomeController();
+
+        // Act
+        var result = controller.Index() as ViewResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.True(string.IsNullOrEmpty(result.ViewName)); // Check for null or empty view name
+    }
+
+    [Fact]
+    public void Index_Returns_View_With_Users()
+    {
+        // Arrange
+        var users = new List<User> { new User(), new User() };
+        mockUserRepo.Setup(repo => repo.List()).Returns(users);
+
+        // Act
+        var result = controller.Index() as ViewResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(users, result.Model);
+    }
+
+    [Theory]
+    [InlineData(null, null, "Name and password cannot be null")]
+    [InlineData("User1", null, "Password cannot be null")]
+    [InlineData(null, "Password1", "Name cannot be null")]
+    public void Login_With_Invalid_Input_Returns_Error(string name, string password, string expectedErrorMessage)
+    {
+        // Arrange
+        var user = new User { Name = name, Password = password };
+        
+        // Adding ModelState error manually as the controller might not be doing this
+        if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(password))
         {
-            // Arrange
-            var controller = new HomeController();
-
-            // Act
-            var result = controller.Index() as ViewResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.True(string.IsNullOrEmpty(result.ViewName)); // Check for null or empty view name
+            controller.ModelState.AddModelError("CustomError", expectedErrorMessage);
         }
 
-        [Fact]
-public void Index_Returns_View_With_Users()
-{
-    // Arrange
-    var users = new List<User> { new User(), new User() };
-    mockUserRepo.Setup(repo => repo.List()).Returns(users);
+        // Act
+        var result = controller.Login(user) as ViewResult;
 
-    // Act
-    var result = controller.Index() as ViewResult;
-
-    // Assert
-    Assert.NotNull(result);
-    Assert.Equal(users, result.Model);
-}
-
-[Theory]
-[InlineData(null, null, "Name and password cannot be null")]
-[InlineData("User1", null, "Password cannot be null")]
-[InlineData(null, "Password1", "Name cannot be null")]
-public void Login_With_Invalid_Input_Returns_Error(string name, string password, string expectedErrorMessage)
-{
-    // Arrange
-    var user = new User { Name = name, Password = password };
-    
-    // Adding ModelState error manually as the controller might not be doing this
-    if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(password))
-    {
-        controller.ModelState.AddModelError("CustomError", expectedErrorMessage);
+        // Assert
+        Assert.NotNull(result);
+        var errorMessages = controller.ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+        Assert.Contains(expectedErrorMessage, errorMessages);
     }
 
-    // Act
-    var result = controller.Login(user) as ViewResult;
 
-    // Assert
-    Assert.NotNull(result);
-    var errorMessages = controller.ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-    Assert.Contains(expectedErrorMessage, errorMessages);
-}
-
-
-[Fact]
-public void Create_User_With_Existing_Name_Returns_Error()
-{
-    // Arrange
-    var existingUser = new User { Name = "existingUser", Email = "email@example.com", Password = "password" };
-    mockUserRepo.Setup(repo => repo.Find(existingUser.Name, 1)).Returns(existingUser);
-
-    var newUser = new User { Name = "existingUser", Email = "newEmail@example.com", Password = "newPassword" };
-
-    // Act
-    var result = controller.Create(newUser) as ViewResult;
-
-    // Manually add model state error if user name already exists
-    if (existingUser.Name == newUser.Name)
+    [Fact]
+    public void Create_User_With_Existing_Name_Returns_Error()
     {
-        controller.ModelState.AddModelError("name", "This name is already taken");
+        // Arrange
+        var existingUser = new User { Name = "existingUser", Email = "email@example.com", Password = "password" };
+        mockUserRepo.Setup(repo => repo.Find(existingUser.Name, 1)).Returns(existingUser);
+
+        var newUser = new User { Name = "existingUser", Email = "newEmail@example.com", Password = "newPassword" };
+
+        // Act
+        var result = controller.Create(newUser) as ViewResult;
+
+        // Manually add model state error if user name already exists
+        if (existingUser.Name == newUser.Name)
+        {
+            controller.ModelState.AddModelError("name", "This name is already taken");
+        }
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.True(controller.ModelState["name"].Errors.Count > 0);
+        Assert.Equal("This name is already taken", controller.ModelState["name"].Errors[0].ErrorMessage);
     }
 
-    // Assert
-    Assert.NotNull(result);
-    Assert.True(controller.ModelState["name"].Errors.Count > 0);
-    Assert.Equal("This name is already taken", controller.ModelState["name"].Errors[0].ErrorMessage);
-}
+
+    [Fact]
+    public void DeleteConfirm_With_Valid_Id_Redirects_To_Index()
+    {
+        // Arrange
+        mockUserRepo.Setup(repo => repo.Delete(1)).Verifiable();
+
+        // Act
+        var result = controller.DeleteConfirm(1) as RedirectToActionResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("Index", result.ActionName);
+        mockUserRepo.Verify(repo => repo.Delete(1), Times.Once);
+    }
+
+    [Fact]
+    public void ChangePassword_With_Incorrect_Old_Password_Returns_Error()
+    {
+        // Arrange
+        var existingUser = new User { Id = 1, Name = "User1", Password = "oldPassword" };
+        mockUserRepo.Setup(repo => repo.Find(existingUser.Id)).Returns(existingUser);
+
+        var userWithIncorrectOldPassword = new User { Id = 1, Name = "User1", Password = "incorrectOldPassword" };
+
+        // Act
+        var result = controller.ChangePassword(userWithIncorrectOldPassword, "newPassword") as ViewResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.True(controller.ModelState["currentPassword"].Errors.Count > 0);
+        Assert.Equal("Incorrect current password", controller.ModelState["currentPassword"].Errors[0].ErrorMessage);
+    }
 
 
-[Fact]
-public void DeleteConfirm_With_Valid_Id_Redirects_To_Index()
-{
-    // Arrange
-    mockUserRepo.Setup(repo => repo.Delete(1)).Verifiable();
+    [Fact]
+    public void Register_With_Valid_User_Redirects_To_Login()
+    {
+        // Arrange
+        var user = new User { Name = "newUser", Email = "email@example.com", Password = "password" };
+        mockUserRepo.Setup(repo => repo.Find(user.Name, 1)).Returns((User)null);
+        mockUserRepo.Setup(repo => repo.Insert(user)).Verifiable();
 
-    // Act
-    var result = controller.DeleteConfirm(1) as RedirectToActionResult;
+        // Act
+        var result = controller.Register(user) as RedirectToActionResult;
 
-    // Assert
-    Assert.NotNull(result);
-    Assert.Equal("Index", result.ActionName);
-    mockUserRepo.Verify(repo => repo.Delete(1), Times.Once);
-}
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("Login", result.ActionName);
+        mockUserRepo.Verify(repo => repo.Insert(user), Times.Once);
+    }
 
-[Fact]
-public void ChangePassword_With_Incorrect_Old_Password_Returns_Error()
-{
-    // Arrange
-    var existingUser = new User { Id = 1, Name = "User1", Password = "oldPassword" };
-    mockUserRepo.Setup(repo => repo.Find(existingUser.Id)).Returns(existingUser);
+    [Fact]
+    public void Edit_With_Valid_Password_Redirects_To_Index()
+    {
+        // Arrange
+        var user = new User { Name = "TestUser", Password = "ValidPwd" }; // Create a sample user with a valid password
+        var mockUserRepo = new Mock<IUserRepo>();
+        mockUserRepo.Setup(repo => repo.Update(user)); // Setup to mock the Update method
 
-    var userWithIncorrectOldPassword = new User { Id = 1, Name = "User1", Password = "incorrectOldPassword" };
+        var controller = new UserController(mockUserRepo.Object);
 
-    // Act
-    var result = controller.ChangePassword(userWithIncorrectOldPassword, "newPassword") as ViewResult;
+        // Act
+        var result = controller.Edit(user) as RedirectToActionResult;
 
-    // Assert
-    Assert.NotNull(result);
-    Assert.True(controller.ModelState["currentPassword"].Errors.Count > 0);
-    Assert.Equal("Incorrect current password", controller.ModelState["currentPassword"].Errors[0].ErrorMessage);
-}
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("Index", result.ActionName); // Ensure it redirects to "Index" action
+        Assert.Equal("Question", result.ControllerName); // Ensure it redirects to "Question" controller
+        mockUserRepo.Verify(repo => repo.Update(user), Times.Once); // Verify that Update method is called once
+    }
 
-
-[Fact]
-public void Register_With_Valid_User_Redirects_To_Login()
-{
-    // Arrange
-    var user = new User { Name = "newUser", Email = "email@example.com", Password = "password" };
-    mockUserRepo.Setup(repo => repo.Find(user.Name, 1)).Returns((User)null);
-    mockUserRepo.Setup(repo => repo.Insert(user)).Verifiable();
-
-    // Act
-    var result = controller.Register(user) as RedirectToActionResult;
-
-    // Assert
-    Assert.NotNull(result);
-    Assert.Equal("Login", result.ActionName);
-    mockUserRepo.Verify(repo => repo.Insert(user), Times.Once);
-}
 
 }   
