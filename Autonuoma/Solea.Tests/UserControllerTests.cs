@@ -113,7 +113,7 @@ mockUserRepo.Setup(repo => repo.Find(It.Is<User>(u => u.Name == username && u.Pa
         }
     }
 
-     [Fact]
+     [Fact]  
     public void Logout_Redirects_To_Login()
     {
     // Arrange
@@ -128,4 +128,85 @@ mockUserRepo.Setup(repo => repo.Find(It.Is<User>(u => u.Name == username && u.Pa
     Assert.Null(result.ControllerName); // Assuming that the controller stays the same (null for the default controller)
     // Add more assertions if needed based on your specific implementation
     }
+
+//     [Fact]
+// public void Register_Success_Redirects_To_Login()
+// {
+//     // Arrange
+//     var user = new User { Name = "newUser", Password = "newPassword" };
+//     mockUserRepo.Setup(repo => repo.Insert(user));
+
+//     // Act
+//     var result = controller.Register(user) as RedirectToActionResult;
+
+//     // Assert
+//     Assert.NotNull(result);
+//     Assert.Equal("Login", result.ActionName);
+//     Assert.Null(result.ControllerName);
+// }
+
+// [Fact]
+// public void Register_Fails_With_Existing_User()
+// {
+//     // Arrange
+//     var existingUser = new User { Name = "existingUser", Password = "existingPassword" };
+//     mockUserRepo.Setup(repo => repo.Exists(existingUser)).Returns(true);
+
+//     // Act
+//     var result = controller.Register(existingUser) as ViewResult;
+
+//     // Assert
+//     Assert.NotNull(result);
+//     Assert.True(controller.ModelState["Name"].Errors.Count > 0);
+//     Assert.Equal("The username is already taken", controller.ModelState["Name"].Errors[0].ErrorMessage);
+// }
+
+// [Fact]
+// public void Profile_Returns_User_Details()
+// {
+//     // Arrange
+//     var user = new User { Name = "existingUser", Password = "correctPassword" };
+//     mockUserRepo.Setup(repo => repo.Find(user)).Returns(user);
+
+//     // Act
+//     var result = controller.Profile() as ViewResult;
+
+//     // Assert
+//     Assert.NotNull(result);
+//     Assert.Equal(user, result.Model);
+// }
+
+// [Fact]
+// public void ChangePassword_Success_Redirects_To_Profile()
+// {
+//     // Arrange
+//     var user = new User { Name = "existingUser", Password = "correctPassword" };
+//     mockUserRepo.Setup(repo => repo.Find(user)).Returns(user);
+//     mockUserRepo.Setup(repo => repo.ChangePassword(user, "newPassword"));
+
+//     // Act
+//     var result = controller.ChangePassword(user, "newPassword") as RedirectToActionResult;
+
+//     // Assert
+//     Assert.NotNull(result);
+//     Assert.Equal("Profile", result.ActionName);
+//     Assert.Null(result.ControllerName);
+// }
+
+[Fact]
+public void ChangePassword_Fails_With_Incorrect_CurrentPassword()
+{
+    // Arrange
+    var user = new User { Name = "existingUser", Password = "correctPassword" };
+    mockUserRepo.Setup(repo => repo.Find(user)).Returns(user);
+
+    // Act
+    var result = controller.ChangePassword(user, "wrongCurrentPassword") as ViewResult;
+
+    // Assert
+    Assert.NotNull(result);
+    Assert.True(controller.ModelState["currentPassword"].Errors.Count > 0);
+    Assert.Equal("Incorrect current password", controller.ModelState["currentPassword"].Errors[0].ErrorMessage);
+}
+
 }   
