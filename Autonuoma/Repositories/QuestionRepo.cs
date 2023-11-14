@@ -12,9 +12,9 @@ using Org.Ktu.Isk.P175B602.Autonuoma.ViewModels;
 
 namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories
 {
-	public class QuestionRepo
+	public class QuestionRepo : IQuestionRepo
 	{
-		public static List<QuestionListVM> List(int n)
+		public List<QuestionListVM> List(int n)
 		{
 			var result = new List<QuestionListVM>();
 			string query;
@@ -84,7 +84,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories
 		}
 
 		
-		public static QuestionEditVM Find(int id)
+		public QuestionEditVM Find(int id)
 		{
 			var mevm = new QuestionEditVM();
 
@@ -109,7 +109,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories
 			return mevm;
 		}
 
-		public static List<QuestionListVM> FindList(string search)
+		public List<QuestionListVM> FindList(string search)
 		{
 			var mevm = List(3);
 			if(search!=null){
@@ -136,7 +136,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories
 
 		
 
-		public static QuestionListVM FindForDeletion(int id)
+		public QuestionListVM FindForDeletion(int id)
 		{
 			var mlvm = new QuestionListVM();
 
@@ -173,7 +173,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories
 			return mlvm;
 		}
 
-		public static void Update(QuestionEditVM QuestionEvm)
+		public void Update(QuestionEditVM QuestionEvm)
 		{
 			var query =
 				$@"UPDATE `{Config.TblPrefix}questions`
@@ -198,7 +198,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories
 			});
 		}
 
-		public static void Insert(QuestionEditVM QuestionEvm)
+		public void Insert(QuestionEditVM QuestionEvm)
 		{
 			var query =
 				$@"INSERT INTO `{Config.TblPrefix}questions`
@@ -232,7 +232,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories
 			});
 		}
 
-		public static void Delete(int id)
+		public void Delete(int id)
 		{
 			var query = $@"DELETE FROM `{Config.TblPrefix}questions` WHERE id=?id";
 			Sql.Delete(query, args => {

@@ -18,12 +18,15 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 		private readonly IUserRepo _userRepo;
         private  IAnswerRepo _answerRepo;
 		private ILikedRepo _likedRepo;
-        public QuestionController(IUserRepo userRepo, IAnswerRepo answerRepo,ILikedRepo likedRepo)
+		private IQuestionRepo _questionRepo;
+        public QuestionController(IUserRepo userRepo, IAnswerRepo answerRepo,ILikedRepo likedRepo, IQuestionRepo questionRepo)
 		{
 			_likedRepo = likedRepo;
             _answerRepo = answerRepo;
             _userRepo = userRepo;
-		}
+			_questionRepo = questionRepo;
+
+        }
 
 		/// <summary>
 		/// This is invoked when either 'Index' action is requested or no action is provided.
@@ -35,11 +38,11 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 			int idUser = Convert.ToInt32(TempData["id"]);
 			var vModel = new QuestionsLog();
 			if(search==null){
-				var questions = QuestionRepo.List(n);
+				var questions = _questionRepo.List(n);
 				vModel.question=questions;
 			}	
 			else{
-				var questionsSearch = QuestionRepo.FindList(search);
+				var questionsSearch = _questionRepo.FindList(search);
 				vModel.question=questionsSearch;
 			}
 			var user = _userRepo.Find(idUser);
@@ -47,11 +50,11 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 			return View(vModel);
 		}
 		//Shows the question and it's answers. From Views gets question id. With that id
-		//using QuestionRepo.FindForDeletion() method finds the question and it's answers
+		//using _questionRepo.FindForDeletion() method finds the question and it's answers
 		public ActionResult Content(int id,int n)
 		{
 			var answerss = _answerRepo.QuestionAnswers(id,n);
-			var questions = QuestionRepo.FindForDeletion(id);
+			var questions = _questionRepo.FindForDeletion(id);
 			var user = _userRepo.Find(Convert.ToInt32(TempData["id"]));
 			var vModel = new Answers();
 			vModel.answers=answerss;
@@ -71,7 +74,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 				LikedId=1;
 			else
 				LikedId = _likedRepo.List().Last().Id+1;
-			var question=QuestionRepo.Find(id);
+			var question=_questionRepo.Find(id);
 			if(match.QuestionId != id){
 				question.Question.Likes+=1;
 				if(user.Id!=Convert.ToInt32(TempData["id"]))
@@ -92,7 +95,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 				_likedRepo.Delete(match.Id);
 			}
 			_userRepo.Update(user);
-			QuestionRepo.Update(question);
+			_questionRepo.Update(question);
 			return RedirectToAction("Index");
 		}
 		//When dislike button pressed on main page, it reloads a page and adds or substracts dislikes count
@@ -106,7 +109,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 				LikedId=1;
 			else
 				LikedId = _likedRepo.List().Last().Id+1;
-			var question=QuestionRepo.Find(id);
+			var question=_questionRepo.Find(id);
 			if(match.QuestionId != id){
 				question.Question.Dislikes+=1;
 				_likedRepo.Insert(id, 0, Convert.ToInt32(TempData["id"]), LikedId, 2);
@@ -123,16 +126,16 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 				_likedRepo.Delete(match.Id);
 			}
 			_userRepo.Update(user);
-			QuestionRepo.Update(question);
+			_questionRepo.Update(question);
 			return RedirectToAction("Index");
 		}
 		//This is invoked when "mark as the best answer" button is pressed
 		public ActionResult Mark(int AnswerId)
 		{
-			var question = QuestionRepo.Find(Convert.ToInt32(TempData["Qid"]));
+			var question = _questionRepo.Find(Convert.ToInt32(TempData["Qid"]));
 			if(question.Question.topAnswer==0){
 				question.Question.topAnswer=1;
-				QuestionRepo.Update(question);
+				_questionRepo.Update(question);
 				var answer = _answerRepo.Find(AnswerId);
 				answer.Answer.best=1;
                 _answerRepo.Update(answer);
@@ -171,7 +174,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 				ModelState.AddModelError("question", "Question must be atleast 5 characters");
 				temp=false;
 			}
-			var question = QuestionRepo.Find(questionEvm.Question.Id);
+			var question = _questionRepo.Find(questionEvm.Question.Id);
 			if(question.Question.Questions == questionEvm.Question.Questions){
 				ModelState.AddModelError("question", "Question with the same title already exist");
 				temp=false;
@@ -184,7 +187,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 				var user = _userRepo.Find(Convert.ToInt32(TempData["id"]));
 				user.Currency-=100;
 				_userRepo.Update(user);
-				QuestionRepo.Insert(questionEvm);
+				_questionRepo.Insert(questionEvm);
 				return RedirectToAction("Index");
 			}
 			return View(questionEvm);
@@ -201,7 +204,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 		/// <returns>Editing form view.</returns>
 		public ActionResult Edit(int id)
 		{
-			var questionEvm = QuestionRepo.Find(id);
+			var questionEvm = _questionRepo.Find(id);
 			questionEvm.user=_userRepo.Find(Convert.ToInt32(TempData["id"]));
 			return View(questionEvm);
 		}
@@ -218,20 +221,20 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 			//form field validation passed?
 			/*if( ModelState.IsValid )
 			{
-				QuestionRepo.Update(questionEvm);
+				_questionRepo.Update(questionEvm);
 
 				//save success, go back to the entity list
 				return RedirectToAction("Index", new { id = questionEvm.user.Id});
 			}*/
 			/*if(questionEvm.Question.Questions == null || questionEvm.Question.Questions.Length < 5)
 				ModelState.AddModelError("question", "Question must be atleast 5 characters");
-			var question = QuestionRepo.Find(questionEvm.Question.Id);
+			var question = _questionRepo.Find(questionEvm.Question.Id);
 			if(question.Question.Questions == questionEvm.Question.Questions)
 				ModelState.AddModelError("question", "Question with the same title already exist");*/
 			if(questionEvm.Question.Content == null || questionEvm.Question.Content.Length < 15)
 				ModelState.AddModelError("content", "Content must be at least 15 characters");
 			else {
-				QuestionRepo.Update(questionEvm);
+				_questionRepo.Update(questionEvm);
 				return RedirectToAction("Index");
 				}
 			//form field validation failed, go back to the form
@@ -244,7 +247,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 		/// <returns>Deletion form view.</returns>
 		public ActionResult Delete(int id)
 		{
-			var questionLvm = QuestionRepo.FindForDeletion(id);
+			var questionLvm = _questionRepo.FindForDeletion(id);
 			Answers question = new Answers();
 			question.question=questionLvm;
 			question.user=_userRepo.Find(Convert.ToInt32(TempData["id"]));
@@ -262,7 +265,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 			//try deleting, this will fail if foreign key constraint fails
 			try
 			{
-				QuestionRepo.Delete(id);
+				_questionRepo.Delete(id);
 
 				//deletion success, redired to list form
 				return RedirectToAction("Index");
@@ -273,7 +276,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 				//enable explanatory message and show delete form
 				ViewData["deletionNotPermitted"] = true;
 				Answers questionLvm = new Answers();
-				questionLvm.question = QuestionRepo.FindForDeletion(id);
+				questionLvm.question = _questionRepo.FindForDeletion(id);
 				questionLvm.user=_userRepo.Find(Convert.ToInt32(TempData["id"]));
 
 				return View("Delete", questionLvm);
@@ -304,15 +307,15 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 			return Redirect("http://www.facebook.com");
 		}
 		public ActionResult Lock(int id){
-			var question = QuestionRepo.Find(id);
+			var question = _questionRepo.Find(id);
 			question.Question.topAnswer=1;
-			QuestionRepo.Update(question);
+			_questionRepo.Update(question);
 			return RedirectToAction("Index");
 		}
 		public ActionResult Unlock(int id){
-			var question = QuestionRepo.Find(id);
+			var question = _questionRepo.Find(id);
 			question.Question.topAnswer=0;
-			QuestionRepo.Update(question);
+			_questionRepo.Update(question);
 			return RedirectToAction("Index");
 		}
 	}
