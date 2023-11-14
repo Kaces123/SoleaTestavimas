@@ -228,9 +228,22 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 
 		public ActionResult Register(User user)
 		{
+			// Check if the user already exists
+			var existingUser = _userRepo.Find(user.Name, 1); // Assuming 'Find' can check for existing user by name
+			if (existingUser != null)
+			{
+				// User already exists, add an error to ModelState
+				ModelState.AddModelError("Name", "The username is already taken");
+				return View(user);
+			}
 
-		return View(user); // Adjust this according to your registration flow
+			// Insert the new user
+			_userRepo.Insert(user);
+
+			// Redirect to the Login page after successful registration
+			return RedirectToAction("Login");
 		}
+
 
 		
 		public int SendConfirm(string mail){
