@@ -95,52 +95,49 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 		/// <param name="user">Entity model filled with latest data.</param>
 		/// <returns>Returns creation from view or redirects back to Index if save is successfull.</returns>
 		[HttpPost]
-		public ActionResult Create(User user)
-		{
-			var matchName = _userRepo.Find(user.Name, 1);
-			var matchEmail = _userRepo.Find(user.Email);
-			// if(matchName.Name == "testasAI"){
-			// 		Debug.WriteLine("gerai");
-			// 	}
-			// else
-			// 	Debug.WriteLine("blogai");
+public ActionResult Create(User user)
+{
+    var matchName = _userRepo.Find(user.Name, 1);
+    var matchEmail = _userRepo.Find(user.Email);
 
-			if( matchName.Name == user.Name)
-				ModelState.AddModelError("name", "This name is already taken");
-			else if( user.Name==null || user.Name.Length < 5)
-				ModelState.AddModelError("name", "Name must be atleast 5 characters long");
-			if( matchEmail.Email == user.Email)
-				ModelState.AddModelError("email", "This email is already taken");
-			else if( user.Email == null || user.Email.Length < 5)
-				ModelState.AddModelError("email", "Email must be atleast 5 characters long");
-			if(user.Password == null || user.Password.Length < 5)
-				ModelState.AddModelError("password", "Password must be atleast 5 characters long");
-			//form field validation passed?
-			if (ModelState.IsValid && matchName.Name != user.Name && matchEmail.Email != user.Email)
-			{
-				// user.Currency=100;
-				// UserRepo.Insert(user);
-				// TempData["id"]=UserRepo.Find(user.Name, 1).Id;
-				//matchName = UserRepo.Find(user.Name, 1);
-				/*if(match.Name == "lab"){
-					Debug.WriteLine("gerai");
-				}
-				else
-					Debug.WriteLine("blogai");*/
-				//save success, go back to the entity list
+    if (matchName != null && matchName.Name == user.Name)
+    {
+        ModelState.AddModelError("name", "This name is already taken");
+    }
+    else if (user.Name == null || user.Name.Length < 5)
+    {
+        ModelState.AddModelError("name", "Name must be at least 5 characters long");
+    }
 
-				int id = SendConfirm(user.Email);
-				TempData["codeId"] = id;
-				TempData["userN"] = user.Name;
-				TempData["userE"] = user.Email;
-				TempData["userP"] = user.Password;
-				return RedirectToAction("Confirm");
-				//return RedirectToAction("Index","Question");
-			}
+    if (matchEmail != null && matchEmail.Email == user.Email)
+    {
+        ModelState.AddModelError("email", "This email is already taken");
+    }
+    else if (user.Email == null || user.Email.Length < 5)
+    {
+        ModelState.AddModelError("email", "Email must be at least 5 characters long");
+    }
 
-			//form field validation failed, go back to the form
-			return View(user);
-		}
+    if (user.Password == null || user.Password.Length < 5)
+    {
+        ModelState.AddModelError("password", "Password must be at least 5 characters long");
+    }
+
+    if (ModelState.IsValid && (matchName == null || matchName.Name != user.Name) && (matchEmail == null || matchEmail.Email != user.Email))
+    {
+        // Additional logic...
+
+        int id = SendConfirm(user.Email);
+        TempData["codeId"] = id;
+        TempData["userN"] = user.Name;
+        TempData["userE"] = user.Email;
+        TempData["userP"] = user.Password;
+        return RedirectToAction("Confirm");
+    }
+
+    return View(user);
+}
+
 
 		/// <summary>
 		/// This is invoked when editing form is first opened in browser.
