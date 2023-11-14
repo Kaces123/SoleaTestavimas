@@ -4,17 +4,17 @@ using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Web;
+using Org.Ktu.Isk.P175B602.Autonuoma.Models;
 using MySql.Data.MySqlClient;
 
-using Org.Ktu.Isk.P175B602.Autonuoma.Models;
 using Org.Ktu.Isk.P175B602.Autonuoma.ViewModels;
 
 
 namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories
 {
-	public class AnswerRepo
+	public class AnswerRepo : IAnswerRepo
 	{
-		public static List<AnswerListVM> List()
+		public List<AnswerListVM> List()
 		{
 			var result = new List<AnswerListVM>();
 			string query;
@@ -51,7 +51,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories
 
 			return result;
 		}
-		public static List<AnswerListVM> QuestionAnswers(int id,int n)
+		public List<AnswerListVM> QuestionAnswers(int id,int n)
 		{
 			var result = new List<AnswerListVM>();
 			string query;
@@ -151,7 +151,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories
 			return mevm;
 		}*/
 
-		public static AnswerEditVM Find(int id)
+		public AnswerEditVM Find(int id)
 		{
 			var mevm = new AnswerEditVM();
 
@@ -176,7 +176,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories
 			return mevm;
 		}
 
-		public static AnswerListVM FindForDeletion(int id)
+		public AnswerListVM FindForDeletion(int id)
 		{
 			var mlvm = new AnswerListVM();
 
@@ -214,7 +214,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories
 			return mlvm;
 		}
 
-		public static void Update(AnswerEditVM AnswerEvm)
+		public void Update(AnswerEditVM AnswerEvm)
 		{
 			var query =
 				$@"UPDATE `{Config.TblPrefix}answers`
@@ -239,7 +239,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories
 			});
 		}
 
-		public static void Insert(AnswerEditVM AnswerEvm)
+		public void Insert(AnswerEditVM AnswerEvm)
 		{
 			var query =
 				$@"INSERT INTO `{Config.TblPrefix}answers`
@@ -273,7 +273,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories
 			});
 		}
 
-		public static void Delete(int id)
+		public void Delete(int id)
 		{
 			var query = $@"DELETE FROM `{Config.TblPrefix}answers` WHERE id=?id";
 			Sql.Delete(query, args => {

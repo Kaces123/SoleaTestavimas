@@ -26,7 +26,6 @@ public class UserControllerTests
             TempData = tempData
         };
     }
-
     [Fact]
     public void Login_Fails_With_Incorrect_Credentials()
     {

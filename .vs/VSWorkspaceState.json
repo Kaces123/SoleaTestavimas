@@ -2,9 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\Autonuoma",
+    "\\Autonuoma\\Controllers",
+    "\\Autonuoma\\Solea.Tests",
     "\\Autonuoma\\Views",
     "\\Autonuoma\\Views\\Question"
   ],
-  "SelectedNode": "\\Autonuoma\\Views\\Question\\Index.cshtml",
+  "SelectedNode": "\\Autonuoma\\Solea.Tests\\AnswerControllerTests.cs",
   "PreviewInSolutionExplorer": false
 }

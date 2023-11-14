@@ -14,10 +14,13 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 	public class AnswerController : Controller
 	{
 		private readonly IUserRepo _userRepo;
-
-		public AnswerController(IUserRepo userRepo)
+        private readonly IAnswerRepo _answerRepo;
+		private readonly ILikedRepo _likedRepo;
+        public AnswerController(IUserRepo userRepo, IAnswerRepo answerRepo,ILikedRepo likedRepo)
 		{
-			_userRepo = userRepo;
+			_likedRepo = likedRepo;
+		    _answerRepo = answerRepo;
+            _userRepo = userRepo;
 		}
 		/// <summary>
 		/// This is invoked when either 'Index' action is requested or no action is provided.
@@ -25,7 +28,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 		/// <returns>Entity list view.</returns>
 		public ActionResult Index()
 		{
-			var answers = AnswerRepo.List();
+			var answers = _answerRepo.List();
 			return View(answers);
 		}
 
@@ -65,7 +68,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 			if(answerEvm.Answer.Answers == null || answerEvm.Answer.Answers.Length < 3)
 				ModelState.AddModelError("answer", "The answer must be atleast 3 characters long");
 			else{
-			AnswerRepo.Insert(answerEvm);
+                _answerRepo.Insert(answerEvm);
 			//form field validation failed, go back to the form
 			//PopulateSelections(answerEvm);
 			return RedirectToAction("Content", "Question", new { id = id});
@@ -77,67 +80,67 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 
 		public ActionResult Like(int id, int idQ, string AnswerUserId)
 		{
-			var match = LikedRepo.Find(id, Convert.ToInt32(TempData["id"]), 0);
+			var match = _likedRepo.Find(id, Convert.ToInt32(TempData["id"]), 0);
 			var user = _userRepo.Find(AnswerUserId, 1);
-			var Liked = LikedRepo.List();
+			var Liked = _likedRepo.List();
 			int LikedId = 0;
 			if(Liked.Count==0)
 				LikedId=1;
 			else
-				LikedId = LikedRepo.List().Last().Id+1;
-			var answer=AnswerRepo.Find(id);
+				LikedId = _likedRepo.List().Last().Id+1;
+			var answer= _answerRepo.Find(id);
 			if(match.AnswerId != id){
 				answer.Answer.Likes+=1;
 				if(user.Id!=Convert.ToInt32(TempData["id"]))
 					user.Currency+=5;
-				LikedRepo.Insert(0, id, Convert.ToInt32(TempData["id"]), LikedId, 1);
+				_likedRepo.Insert(0, id, Convert.ToInt32(TempData["id"]), LikedId, 1);
 			}
 			else if(match.likedOrDisliked == 2 ){
 				answer.Answer.Likes+=1;
 				answer.Answer.Dislikes-=1;
 				if(user.Id!=Convert.ToInt32(TempData["id"]))
 					user.Currency+=5;
-				LikedRepo.Update(0, id, Convert.ToInt32(TempData["id"]), match.Id, 1);
+				_likedRepo.Update(0, id, Convert.ToInt32(TempData["id"]), match.Id, 1);
 			}
 			else{
 				if(user.Id!=Convert.ToInt32(TempData["id"]))
 					user.Currency-=5;
 				answer.Answer.Likes-=1;
-				LikedRepo.Delete(match.Id);
+				_likedRepo.Delete(match.Id);
 			}
 			_userRepo.Update(user);
-			AnswerRepo.Update(answer);
+            _answerRepo.Update(answer);
 			return RedirectToAction("Content","Question", new {id = idQ});
 		}
 
 		public ActionResult Dislike(int id, int idQ, string AnswerUserId)
 		{
-			var match = LikedRepo.Find(id, Convert.ToInt32(TempData["id"]), 0);
+			var match = _likedRepo.Find(id, Convert.ToInt32(TempData["id"]), 0);
 			var user = _userRepo.Find(AnswerUserId, 1);
-			var Liked = LikedRepo.List();
+			var Liked = _likedRepo.List();
 			int LikedId = 0;
 			if(Liked.Count==0)
 				LikedId=1;
 			else
-				LikedId = LikedRepo.List().Last().Id+1;
-			var answer=AnswerRepo.Find(id);
+				LikedId = _likedRepo.List().Last().Id+1;
+			var answer= _answerRepo.Find(id);
 			if(match.AnswerId != id){
 				answer.Answer.Dislikes+=1;
-				LikedRepo.Insert(0, id, Convert.ToInt32(TempData["id"]), LikedId, 2);
+				_likedRepo.Insert(0, id, Convert.ToInt32(TempData["id"]), LikedId, 2);
 			}
 			else if(match.likedOrDisliked == 1 ){
 				answer.Answer.Likes-=1;
 				answer.Answer.Dislikes+=1;
 				if(user.Id!=Convert.ToInt32(TempData["id"]))
 					user.Currency-=5;
-				LikedRepo.Update(0, id, Convert.ToInt32(TempData["id"]), match.Id, 2);
+				_likedRepo.Update(0, id, Convert.ToInt32(TempData["id"]), match.Id, 2);
 			}
 			else{
 				answer.Answer.Dislikes-=1;
-				LikedRepo.Delete(match.Id);
+				_likedRepo.Delete(match.Id);
 			}
 			_userRepo.Update(user);
-			AnswerRepo.Update(answer);
+            _answerRepo.Update(answer);
 			return RedirectToAction("Content","Question", new {id = idQ});
 		}
 		/// <summary>
@@ -147,7 +150,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 		/// <returns>Editing form view.</returns>
 		public ActionResult Edit(int id, string q, int id1)
 		{
-			var answerEvm = AnswerRepo.Find(id1);
+			var answerEvm = _answerRepo.Find(id1);
 			answerEvm.Answer.fk_Questions=q;
 			answerEvm.Lists.Questions_Id=id;
 			answerEvm.user=_userRepo.Find(Convert.ToInt32(TempData["id"]));
@@ -176,7 +179,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 					ModelState.AddModelError("answer", "The answer must be at least 3 characters long");
 					return View(answerEvm);
 				}
-				AnswerRepo.Update(answerEvm);
+            _answerRepo.Update(answerEvm);
 
 				//save success, go back to the entity list
 				return RedirectToAction("Content","Question", new { id = id});
@@ -193,7 +196,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 		public ActionResult Delete(int id, int idQ)
 		{
 			Answers answerLvm = new Answers();
-			answerLvm.answer = AnswerRepo.FindForDeletion(id);
+			answerLvm.answer = _answerRepo.FindForDeletion(id);
 			answerLvm.user=_userRepo.Find(Convert.ToInt32(TempData["id"]));
 			//answerLvm.question.Id=23;
 			return View(answerLvm);
@@ -210,7 +213,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 			//try deleting, this will fail if foreign key constraint fails
 			try
 			{
-				AnswerRepo.Delete(id);
+                _answerRepo.Delete(id);
 
 				//deletion success, redired to list form
 				return RedirectToAction("Content","Question", new{id=idQ});
@@ -221,7 +224,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 				//enable explanatory message and show delete form
 				ViewData["deletionNotPermitted"] = true;
 				Answers answerLvm = new Answers();
-				answerLvm.answer = AnswerRepo.FindForDeletion(id);
+				answerLvm.answer = _answerRepo.FindForDeletion(id);
 				answerLvm.user=_userRepo.Find(Convert.ToInt32(TempData["id"]));
 				answerLvm.question.Id=idQ;
 

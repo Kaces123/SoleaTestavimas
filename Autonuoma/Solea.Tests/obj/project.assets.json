@@ -2408,12 +2408,12 @@
           "lib/netstandard1.3/System.Xml.XDocument.dll": {}
         }
       },
-      "xunit/2.6.0": {
+      "xunit/2.6.1": {
         "type": "package",
         "dependencies": {
           "xunit.analyzers": "1.4.0",
-          "xunit.assert": "2.6.0",
-          "xunit.core": "[2.6.0]"
+          "xunit.assert": "2.6.1",
+          "xunit.core": "[2.6.1]"
         }
       },
       "xunit.abstractions/2.0.3": {
@@ -2432,7 +2432,7 @@
       "xunit.analyzers/1.4.0": {
         "type": "package"
       },
-      "xunit.assert/2.6.0": {
+      "xunit.assert/2.6.1": {
         "type": "package",
         "compile": {
           "lib/net6.0/xunit.assert.dll": {
@@ -2445,11 +2445,11 @@
           }
         }
       },
-      "xunit.core/2.6.0": {
+      "xunit.core/2.6.1": {
         "type": "package",
         "dependencies": {
-          "xunit.extensibility.core": "[2.6.0]",
-          "xunit.extensibility.execution": "[2.6.0]"
+          "xunit.extensibility.core": "[2.6.1]",
+          "xunit.extensibility.execution": "[2.6.1]"
         },
         "build": {
           "build/xunit.core.props": {},
@@ -2460,7 +2460,7 @@
           "buildMultiTargeting/xunit.core.targets": {}
         }
       },
-      "xunit.extensibility.core/2.6.0": {
+      "xunit.extensibility.core/2.6.1": {
         "type": "package",
         "dependencies": {
           "NETStandard.Library": "1.6.1",
@@ -2477,11 +2477,11 @@
           }
         }
       },
-      "xunit.extensibility.execution/2.6.0": {
+      "xunit.extensibility.execution/2.6.1": {
         "type": "package",
         "dependencies": {
           "NETStandard.Library": "1.6.1",
-          "xunit.extensibility.core": "[2.6.0]"
+          "xunit.extensibility.core": "[2.6.1]"
         },
         "compile": {
           "lib/netstandard1.1/xunit.execution.dotnet.dll": {
@@ -2516,7 +2516,8 @@
           "MySql.Data": "8.0.28",
           "NLog": "4.7.13",
           "Newtonsoft.Json": "13.0.1",
-          "xunit": "2.6.0"
+          "NuGet.Frameworks": "6.5.0",
+          "xunit": "2.6.1"
         },
         "compile": {
           "bin/placeholder/Autonuoma.dll": {}
@@ -7259,16 +7260,16 @@
         "system.xml.xdocument.nuspec"
       ]
     },
-    "xunit/2.6.0": {
-      "sha512": "r2EIqD4rQmGTZ4q3imx85sApFhEGFxKpLkmJ+Q0/+tEqQt0jxADm75bcmX2O2SZkNPrkdP59KpNUtRUoEzVGuQ==",
+    "xunit/2.6.1": {
+      "sha512": "SnTEV7LFf2s3GJua5AJKB/m115jDcWJSG5n02YZS05iezU2QJKjShCsOxlxL8FUO+J7h2/yXGEr+evgpIHc3sA==",
       "type": "package",
-      "path": "xunit/2.6.0",
+      "path": "xunit/2.6.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "_content/README.md",
         "_content/logo-128-transparent.png",
-        "xunit.2.6.0.nupkg.sha512",
+        "xunit.2.6.1.nupkg.sha512",
         "xunit.nuspec"
       ]
     },
@@ -7307,10 +7308,10 @@
         "xunit.analyzers.nuspec"
       ]
     },
-    "xunit.assert/2.6.0": {
-      "sha512": "JI2oA5PhCtjeG+6LLU+G5YYIZcst6zKDV5VrkB7r/1oLBI2wNL4Tn3tfeZ4YUVvKlYPISYQ49NK1w7EpeXgQNw==",
+    "xunit.assert/2.6.1": {
+      "sha512": "+4bI81RS88tiYvfsBfC0YsdDd8v7kkLkRtDXmux3YBT8u1afhjdwxwBvkHGgrQ6NPRzE8xZpVGX2iaLkbXvYvg==",
       "type": "package",
-      "path": "xunit.assert/2.6.0",
+      "path": "xunit.assert/2.6.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -7320,14 +7321,14 @@
         "lib/net6.0/xunit.assert.xml",
         "lib/netstandard1.1/xunit.assert.dll",
         "lib/netstandard1.1/xunit.assert.xml",
-        "xunit.assert.2.6.0.nupkg.sha512",
+        "xunit.assert.2.6.1.nupkg.sha512",
         "xunit.assert.nuspec"
       ]
     },
-    "xunit.core/2.6.0": {
-      "sha512": "TwAELEOG57g5+K9pX8PQosDOdRaPWBGjaZqyFSdCmbxnrvps8YaZahUWHC25GV+DIvqfI1j2brpKCGgGI4pMcQ==",
+    "xunit.core/2.6.1": {
+      "sha512": "Ru0POZXVYwa/G3/tS3TO3Yug/P+08RPeDkuepTmywNjfICYwHHY9zJBoxdeziZ0OintLtLKUMOBcC6VJzjqhwg==",
       "type": "package",
-      "path": "xunit.core/2.6.0",
+      "path": "xunit.core/2.6.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -7337,14 +7338,14 @@
         "build/xunit.core.targets",
         "buildMultiTargeting/xunit.core.props",
         "buildMultiTargeting/xunit.core.targets",
-        "xunit.core.2.6.0.nupkg.sha512",
+        "xunit.core.2.6.1.nupkg.sha512",
         "xunit.core.nuspec"
       ]
     },
-    "xunit.extensibility.core/2.6.0": {
-      "sha512": "ygKVBzF9WS6l9lD+vlD+Q2k9p18jUQingUyRA8vW6e8fV+I3hT3LlAhxxJ+AxpudbNEF44C4kLpmRGSJoPTWBA==",
+    "xunit.extensibility.core/2.6.1": {
+      "sha512": "DA4NqcFGLlRxX2zP3QptlQuRoOSdmBkr17ntK29jfRXqScj2fysIhvQvF5DHtDzAEkoRPqZcfR/IRGSItxmRqw==",
       "type": "package",
-      "path": "xunit.extensibility.core/2.6.0",
+      "path": "xunit.extensibility.core/2.6.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -7357,14 +7358,14 @@
         "lib/net452/xunit.runner.utility.net452.dll",
         "lib/netstandard1.1/xunit.core.dll",
         "lib/netstandard1.1/xunit.core.xml",
-        "xunit.extensibility.core.2.6.0.nupkg.sha512",
+        "xunit.extensibility.core.2.6.1.nupkg.sha512",
         "xunit.extensibility.core.nuspec"
       ]
     },
-    "xunit.extensibility.execution/2.6.0": {
-      "sha512": "ObAZeNhk/bZLGKP+cKx8bZxnMUhawcpiIc3v2bLH6BHT6gKGbF4GrUgYnJyeqgUsg7IK01aqQOzmYmiCtezsqQ==",
+    "xunit.extensibility.execution/2.6.1": {
+      "sha512": "sLKPQKuEQhRuhVuLiYEkRdUcwCfp+BIKds3r0JL8AYvOWRmVYYKWYouuYzPjmeUF6iEGC9CHCVz/NF1+wv+Mag==",
       "type": "package",
-      "path": "xunit.extensibility.execution/2.6.0",
+      "path": "xunit.extensibility.execution/2.6.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -7374,7 +7375,7 @@
         "lib/net452/xunit.execution.desktop.xml",
         "lib/netstandard1.1/xunit.execution.dotnet.dll",
         "lib/netstandard1.1/xunit.execution.dotnet.xml",
-        "xunit.extensibility.execution.2.6.0.nupkg.sha512",
+        "xunit.extensibility.execution.2.6.1.nupkg.sha512",
         "xunit.extensibility.execution.nuspec"
       ]
     },
@@ -7423,45 +7424,47 @@
       "Autonuoma >= 1.0.0",
       "Microsoft.NET.Test.Sdk >= 17.7.1",
       "coverlet.collector >= 3.2.0",
-      "xunit >= 2.6.0",
+      "xunit >= 2.6.1",
       "xunit.runner.visualstudio >= 2.4.5"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\karol\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\ITWORK\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Universiteto_studijos\\Githubas\\SoleaTestavimas\\Autonuoma\\Solea.Tests\\Solea.Tests.csproj",
+      "projectUniqueName": "C:\\Users\\ITWORK\\Desktop\\SoleaTestavimas\\Autonuoma\\Solea.Tests\\Solea.Tests.csproj",
       "projectName": "Solea.Tests",
-      "projectPath": "E:\\Universiteto_studijos\\Githubas\\SoleaTestavimas\\Autonuoma\\Solea.Tests\\Solea.Tests.csproj",
-      "packagesPath": "C:\\Users\\karol\\.nuget\\packages\\",
-      "outputPath": "E:\\Universiteto_studijos\\Githubas\\SoleaTestavimas\\Autonuoma\\Solea.Tests\\obj\\",
+      "projectPath": "C:\\Users\\ITWORK\\Desktop\\SoleaTestavimas\\Autonuoma\\Solea.Tests\\Solea.Tests.csproj",
+      "packagesPath": "C:\\Users\\ITWORK\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ITWORK\\Desktop\\SoleaTestavimas\\Autonuoma\\Solea.Tests\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
       ],
       "configFilePaths": [
-        "C:\\Users\\karol\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\ITWORK\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {},
-        "https://packagesource": {},
-        "https://packagesource1": {}
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "E:\\Universiteto_studijos\\Githubas\\SoleaTestavimas\\Autonuoma\\Autonuoma.csproj": {
-              "projectPath": "E:\\Universiteto_studijos\\Githubas\\SoleaTestavimas\\Autonuoma\\Autonuoma.csproj"
+            "C:\\Users\\ITWORK\\Desktop\\SoleaTestavimas\\Autonuoma\\Autonuoma.csproj": {
+              "projectPath": "C:\\Users\\ITWORK\\Desktop\\SoleaTestavimas\\Autonuoma\\Autonuoma.csproj"
             }
           }
         }
@@ -7488,7 +7491,7 @@
           },
           "xunit": {
             "target": "Package",
-            "version": "[2.6.0, )"
+            "version": "[2.6.1, )"
           },
           "xunit.runner.visualstudio": {
             "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
@@ -7513,7 +7516,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
       }
     }
   }
