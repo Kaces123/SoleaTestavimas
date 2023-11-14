@@ -1,35 +1,33 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Mokslai\\4 metai\\Testavimas\\TestavimasForumui\\Solea\\Autonuoma\\Solea.Tests\\Solea.Tests.csproj": {}
+    "E:\\Universiteto_studijos\\Githubas\\SoleaTestavimas\\Autonuoma\\Solea.Tests\\Solea.Tests.csproj": {}
   },
   "projects": {
-    "C:\\Mokslai\\4 metai\\Testavimas\\TestavimasForumui\\Solea\\Autonuoma\\Autonuoma.csproj": {
+    "E:\\Universiteto_studijos\\Githubas\\SoleaTestavimas\\Autonuoma\\Autonuoma.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Mokslai\\4 metai\\Testavimas\\TestavimasForumui\\Solea\\Autonuoma\\Autonuoma.csproj",
+        "projectUniqueName": "E:\\Universiteto_studijos\\Githubas\\SoleaTestavimas\\Autonuoma\\Autonuoma.csproj",
         "projectName": "Autonuoma",
-        "projectPath": "C:\\Mokslai\\4 metai\\Testavimas\\TestavimasForumui\\Solea\\Autonuoma\\Autonuoma.csproj",
-        "packagesPath": "C:\\Users\\dabas\\.nuget\\packages\\",
-        "outputPath": "C:\\Mokslai\\4 metai\\Testavimas\\TestavimasForumui\\Solea\\Autonuoma\\obj\\",
+        "projectPath": "E:\\Universiteto_studijos\\Githubas\\SoleaTestavimas\\Autonuoma\\Autonuoma.csproj",
+        "packagesPath": "C:\\Users\\karol\\.nuget\\packages\\",
+        "outputPath": "E:\\Universiteto_studijos\\Githubas\\SoleaTestavimas\\Autonuoma\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\dabas\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\karol\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://packagesource": {},
+          "https://packagesource1": {}
         },
         "frameworks": {
           "net6.0": {
@@ -105,39 +103,37 @@
         }
       }
     },
-    "C:\\Mokslai\\4 metai\\Testavimas\\TestavimasForumui\\Solea\\Autonuoma\\Solea.Tests\\Solea.Tests.csproj": {
+    "E:\\Universiteto_studijos\\Githubas\\SoleaTestavimas\\Autonuoma\\Solea.Tests\\Solea.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Mokslai\\4 metai\\Testavimas\\TestavimasForumui\\Solea\\Autonuoma\\Solea.Tests\\Solea.Tests.csproj",
+        "projectUniqueName": "E:\\Universiteto_studijos\\Githubas\\SoleaTestavimas\\Autonuoma\\Solea.Tests\\Solea.Tests.csproj",
         "projectName": "Solea.Tests",
-        "projectPath": "C:\\Mokslai\\4 metai\\Testavimas\\TestavimasForumui\\Solea\\Autonuoma\\Solea.Tests\\Solea.Tests.csproj",
-        "packagesPath": "C:\\Users\\dabas\\.nuget\\packages\\",
-        "outputPath": "C:\\Mokslai\\4 metai\\Testavimas\\TestavimasForumui\\Solea\\Autonuoma\\Solea.Tests\\obj\\",
+        "projectPath": "E:\\Universiteto_studijos\\Githubas\\SoleaTestavimas\\Autonuoma\\Solea.Tests\\Solea.Tests.csproj",
+        "packagesPath": "C:\\Users\\karol\\.nuget\\packages\\",
+        "outputPath": "E:\\Universiteto_studijos\\Githubas\\SoleaTestavimas\\Autonuoma\\Solea.Tests\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\dabas\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\karol\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://packagesource": {},
+          "https://packagesource1": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Mokslai\\4 metai\\Testavimas\\TestavimasForumui\\Solea\\Autonuoma\\Autonuoma.csproj": {
-                "projectPath": "C:\\Mokslai\\4 metai\\Testavimas\\TestavimasForumui\\Solea\\Autonuoma\\Autonuoma.csproj"
+              "E:\\Universiteto_studijos\\Githubas\\SoleaTestavimas\\Autonuoma\\Autonuoma.csproj": {
+                "projectPath": "E:\\Universiteto_studijos\\Githubas\\SoleaTestavimas\\Autonuoma\\Autonuoma.csproj"
               }
             }
           }

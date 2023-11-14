@@ -112,4 +112,20 @@ mockUserRepo.Setup(repo => repo.Find(It.Is<User>(u => u.Name == username && u.Pa
             Assert.Equal("Incorrect name or password", controller.ModelState["password"].Errors[0].ErrorMessage);
         }
     }
+
+     [Fact]
+    public void Logout_Redirects_To_Login()
+    {
+    // Arrange
+    // Set up any necessary data or state before logging out
+
+    // Act
+    var result = controller.Logout() as RedirectToActionResult;
+
+    // Assert
+    Assert.NotNull(result);
+    Assert.Equal("Login", result.ActionName);
+    Assert.Null(result.ControllerName); // Assuming that the controller stays the same (null for the default controller)
+    // Add more assertions if needed based on your specific implementation
+    }
 }   

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Autonuoma", "Autonuoma.csproj", "{C9CFBAA5-6F21-4C81-ABA3-55CCDF367FFC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Solea.Tests", "Solea.Tests\Solea.Tests.csproj", "{268B0E57-107E-4651-98C9-DCC5DF9F9589}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C9CFBAA5-6F21-4C81-ABA3-55CCDF367FFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9CFBAA5-6F21-4C81-ABA3-55CCDF367FFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9CFBAA5-6F21-4C81-ABA3-55CCDF367FFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9CFBAA5-6F21-4C81-ABA3-55CCDF367FFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{268B0E57-107E-4651-98C9-DCC5DF9F9589}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{268B0E57-107E-4651-98C9-DCC5DF9F9589}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{268B0E57-107E-4651-98C9-DCC5DF9F9589}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{268B0E57-107E-4651-98C9-DCC5DF9F9589}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3CF46FF7-8248-4A81-9279-DAE58265E8BB}
+	EndGlobalSection
+EndGlobal

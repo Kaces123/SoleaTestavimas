@@ -7,6 +7,7 @@ using System.Web;
 using MySql.Data.MySqlClient;
 
 using Org.Ktu.Isk.P175B602.Autonuoma.Models;
+using Org.Ktu.Isk.P175B602.Autonuoma.ViewModels;
 
 
 namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories
@@ -57,6 +58,23 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories
 			return User;
 		}
 		//This is used to check when loggin in whether a user inputed a correct name and password
+
+		public bool Exists(User user)
+        {
+			var users = new List<User>();
+            // Implement the logic to check if the user already exists in your database.
+            // This could involve querying your database to see if there is a user with the same name or email.
+            // For demonstration purposes, assuming a simple in-memory list of users:
+            return users.Any(u => u.Name == user.Name || u.Email == user.Email);
+        }
+
+		public void ChangePassword(User user, string newPassword)
+   		 {
+        // Implement logic to change the user's password
+        // For example, you might update the user entity in the database
+        user.Password = newPassword;
+        // Your database update logic here...
+   		 }
 		public User Find(User user)
 		{
 			var User = new User();

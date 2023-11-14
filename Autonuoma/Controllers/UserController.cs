@@ -82,6 +82,13 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 			return View(user);
 		}
 
+		public ActionResult Logout()
+    {
+
+        TempData.Remove("id");
+        return RedirectToAction("Login");
+    }
+
 		/// <summary>
 		/// This is invoked when buttons are pressed in the creation form.
 		/// </summary>
@@ -202,6 +209,30 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 				return View("Delete", user);
 			}
 		}
+
+		public ActionResult ChangePassword(User user, string newPassword)
+		{
+    	var existingUser = _userRepo.Find(user.Id); // Assuming you have an Id property in your User model
+
+    	if (existingUser != null && existingUser.Password == user.Password)
+    	{
+        _userRepo.ChangePassword(existingUser, newPassword);
+        return RedirectToAction("Profile");
+    	}
+    	else
+    	{
+        ModelState.AddModelError("currentPassword", "Incorrect current password");
+        return View("Edit", user);
+    	}
+ 		}
+
+		public ActionResult Register(User user)
+		{
+
+		return View(user); // Adjust this according to your registration flow
+		}
+
+		
 		public int SendConfirm(string mail){
 			using (MailMessage mm = new MailMessage("blokasthe@gmail.com", mail))
         {
@@ -246,6 +277,26 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers
 			_userRepo.Insert(user);
 			TempData["id"]=_userRepo.Find(user.Name, 1).Id;
 			return RedirectToAction("Index", "Question");
+		}
+
+		public ActionResult Profile()
+		{
+   			 // Assuming you have a way to get the current user's ID, you might use TempData["id"]
+  			  int userId = TempData.ContainsKey("id") ? Convert.ToInt32(TempData["id"]) : 0;
+
+   			 if (userId > 0)
+    		{
+       			 var user = _userRepo.Find(userId);
+
+        		if (user != null)
+       				 {
+           				 return View(user);
+        			}
+    		}
+
+    	// Handle the case where the user is not found or the ID is not set
+   	 	// You can redirect to another action or return an error view, as needed.
+    	return RedirectToAction("Index"); // Redirect to the index page, for example.
 		}
 	}
 }
