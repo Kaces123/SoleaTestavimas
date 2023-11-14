@@ -1,0 +1,61 @@
+@model Org.Ktu.Isk.P175B602.Autonuoma.ViewModels.Answers
+@{
+	ViewData["title"] = "Delete topic";
+	TempData["id"] = Model.user.Id;
+	TempData["id1"] = Model.user.Id;
+	TempData["name"] = Model.user.Name;
+	TempData["currency"] = Model.user.Currency;
+}
+<link rel="stylesheet" href="~/css/bootswatchTheme.css" />
+<div class="main-content-header container-fluid d-flex d-row justify-content-between align-items-center">
+	<pantrast class="title">@ViewData["title"]</pantrast>
+</div>
+
+<div class="container-fluid d-flex justify-content-center">
+@using (Html.BeginForm()) 
+{
+	@Html.AntiForgeryToken()
+
+    @Html.HiddenFor(m => m.question.Likes)
+	@Html.HiddenFor(m => m.question.Dislikes)
+	@Html.HiddenFor(m => m.question.Id)
+	@Html.HiddenFor(m => m.question.fk_User)
+
+	<fieldset class="border rounded shadow p-2">
+		<legend style="color: red;" class="text-center">You sure you want to delete your topic?</legend>
+
+		<dl>
+			<dt>@Html.DisplayNameFor(m => m.question.Questions)</dt>
+			<dd>@Html.DisplayFor(m => m.question.Questions)</dd>
+
+			<dt>@Html.DisplayNameFor(m => m.question.Content)</dt>
+			<dd>@Html.DisplayFor(m => m.question.Content)</dd>
+
+		</dl>
+
+		@if( ViewData["deletionNotPermitted"] != null )
+		{
+			<div class="alert alert-warning text-center">
+				<i class="fa-solid fa-circle-exclamation"></i> You can't delete this topic because it's already used in answer section.
+			</div>
+		}
+		else
+		{
+			<div class="container-fluid d-flex d-row justify-content-end">
+				<button
+					formaction="@Url.Action("DeleteConfirm", new {id = Model.question.Id})"
+					class="btn btn-danger"
+					style="white-space: nowrap;"
+				><i class="fa-solid fa-trash"></i> Delete</button>
+			</div>			
+		}
+	</fieldset>
+}
+</div>
+
+<div class="main-content-footer container-fluid d-flex d-row justify-content-between align-items-center">
+	<span class="title"></span>
+	<span class="actions">
+		<a href="@Url.Action("Index")" class="btn btn-success"><i class="fa-solid fa-angles-left"></i> Back to list</a>
+	</span>
+</div>

@@ -1,0 +1,212 @@
+﻿@{
+	/// <summary>
+	/// Helper for marking active links in main menu.
+	/// </summary>
+	/// <param name="ctrl">Controller to look for.</param>
+	/// <param name="act">Action to look for. Pass null if action does not matter.</param>
+	/// <returns>If controller and (optionally) action match given ones returns "active". Returns empty string otherwise.</returns>
+	@*string MarkActive(string ctrl, string act = null)
+	{
+		//get current controller and action
+		var curCtrl = (string)ViewContext.RouteData.Values["Controller"];
+		var curAct = (string)ViewContext.RouteData.Values["Action"];
+
+		//compare to given ones
+		if( curCtrl == ctrl && (act == null || curAct == act) )
+			return "active";
+		return "";
+	}*@
+	
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Solea - @ViewData["title"]</title>
+	<link rel="icon" type="image/x-icon" href="css/favicon.ico">
+	<link rel="stylesheet" href="~/css/bootswatchTheme.css" />
+
+	@*<script src="@Url.Content("~/lib/jquery/dist/jquery.js")"></script> 
+
+	<script src="@Url.Content("~/lib/datatables/datatables.js")"></script>
+
+	<script src="@Url.Content("~/js/site.js")" asp-append-version="true"></script>*@
+	
+</head>
+@*@if(TempData["id"]!=null){
+			TempData["id"]=TempData["id"];	
+}*@
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="http://localhost:5000/Question"><img src="/images/Solea-logos_whitee.png" width="170" height="auto" alt="logo"</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+	@*<script>
+		sessionStorage.setItem("id", @TempData["id"]);
+		if(sessionStorage.id == null || sessionStorage.id == 0)
+	</script>*@
+	@if(TempData["id1"]==null || Convert.ToInt32(TempData["id1"])==0){
+	<span class="actions">
+		<a href="@Url.Action("Create", "User")" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Register</a>
+	</span>
+	<span class="actions">
+		<a href="@Url.Action("Login", "User")" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Login</a>
+	</span>
+	}
+	else{
+		<span class="actions">
+			<a ><i class="fa-solid fa-plus"></i></a>
+		</span>
+
+		   <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+			   
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+				@*<antrast >@TempData["name"] </antrast>*@
+					<ul class="nav nav-tabs">
+ 						<li class="nav-item dropdown">
+    					<antrast class="btn btn-secondary btn-lg dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">@TempData["name"] </antrast>
+    						<div class="dropdown-menu" style="">
+      							<a class="dropdown-item" href="@Url.Action("Edit", "User")">Edit profile</a>
+      							<a class="dropdown-item" style="color: red;" href="@Url.Action("Index", "Home")">Logout</a>
+  						</li>
+					</ul>
+				<img src="/images/gold.png" alt="golden" width="30" height="auto">x@(Convert.ToInt32(TempData["currency"])/100)
+				<img src="/images/silver.png" alt="silver" width="30" height="auto">x@(Convert.ToInt32(TempData["currency"])%100/10)
+				<img src="/images/bronze.png" alt="bronze" width="30" height="auto">x@(Convert.ToInt32(TempData["currency"])%10)
+            </li> 
+        </ul>
+    </div>	
+	}
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav me-auto">
+        @*<li class="nav-item">
+          <a class="nav-link active" href="http://localhost:5000/Question">Questions
+            <span class="visually-hidden">(current)</span>
+          </a>
+        </li>*@
+        @*<li class="nav-item">
+          <a class="nav-link" href="http://localhost:5000/Question/Create">Create a question</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://localhost:5000/Answer">Answers</a>
+        </li>
+		
+        @*<li class="nav-item">
+          <a class="nav-link" href="http://localhost:5000/User">Users</a>
+        </li>*@
+		
+      </ul>
+    </div>
+  </div>
+</nav>
+		
+
+	@* main menu*@
+	<nav>
+		<div>
+			
+			<div>
+				<div>
+					<ul>
+						 @*
+						<li>
+							<a href="@Url.Action("Index", "User")" class="@MarkActive("User") nav-link">Users</a>
+						</li>
+						<li>
+							<a href="@Url.Action("Index", "Question")" class="@MarkActive("Question") nav-link">Questions</a>
+						</li>
+						<li>
+							<a href="@Url.Action("Index", "Answer")" class="@MarkActive("Answer") nav-link">Answers</a>
+						</li>*@
+					</ul>
+				</div>
+			</div>
+		</div>
+	</nav>
+
+	@* main content gets rendered here *@
+	<div class="main-content container-fluid">
+		@RenderBody()
+	</div>
+
+	 @*page footer 
+	<div class="container-fluid bg-dark text-muted">
+		<div class="footer-wrapper container-fluid d-flex justify-content-center pt-2">
+			<footer >
+				<p>&copy; SOLEA</p>
+			</footer>
+		</div>
+	</div>
+	*@
+	
+	@* any javascript comming from script sections in views gets redered here *@
+	@RenderSection("scripts", required: false)
+
+	@* initialization routines go here *@
+	<script type="text/javascript">
+		//this function is run when page is fully loaded
+		$(document).ready(function () {
+			//apply datatables plugin on tables having css class 'entitylist'
+			$(".entitylist").DataTable({
+				"autoWidth": false,
+				language : {
+					"decimal":        "",
+					"emptyTable":     "",
+					"info":           "",
+					"infoEmpty":      "",
+					"infoFiltered":   "",
+					"infoPostFix":    "",
+					"thousands":      "",
+					"lengthMenu":     "",
+					"loadingRecords": "",
+					"processing":     "",
+					"search":         "Search:",
+					"zeroRecords":    "",
+					"paginate": {
+						"first":      "",
+						"last":       "",
+						"next":       "",
+						"previous":   ""
+					},
+					"aria": {
+						"sortAscending":  ": rikiuoti didėjimo tvarka",
+						"sortDescending": ": rikiuoti mažėjimo tvarka"
+					}
+				}
+			});
+
+			//apply datetimepicker plugin on date and datetime input fields
+			$(".date-picker").datetimepicker({ timepicker:false, format: 'Y-m-d' });
+			$(".datetime-picker").datetimepicker({ format: 'Y-m-d h:i' });
+
+			//Kadangi naudojamas vienas pasirinkimo objektas(SelectListItems) nustatyti pasirinkimo reikšmei reikia ja nustatyti panaudojant javascript funkcija ir html elementą
+			@* $(".sel_element").each(function () {
+				$(this).closest("td").find("select").val($(this).text());
+			}); *@
+
+			//Inicijuojami datos ir laiko pasirinkimo įvedimo elementai
+			@* $(".date-picker").datepicker({ dateFormat: 'yy-mm-dd' });
+			$(".datetime-picker").datetimepicker({ format: 'Y-m-d h:i' }); *@
+
+			@* $('input[type=text],input[type=radio],input[type=checkbox],textarea,select,input[type=email],input[type=number],input[type=datetime]').each(function () {
+				var req = $(this).attr('data-val-required');
+				var exclude = $(this).attr('data-exclude');
+				if (undefined != req && undefined == exclude) {
+					var label = $('label[for="' + $(this).attr('id') + '"]');
+					var text = label.text();
+					if (text.length > 0) {
+						label.append('<span style="color:red"> *</span>');
+					}
+				}
+			}); *@
+		});
+	</script>
+	<script> src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>

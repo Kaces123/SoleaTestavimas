@@ -1,0 +1,248 @@
+﻿@model Org.Ktu.Isk.P175B602.Autonuoma.ViewModels.Answers
+@{
+	ViewData["title"] = "Topic";
+	TempData["id"] = Model.user.Id;
+	TempData["id1"] = Model.user.Id;
+	TempData["name"] = Model.user.Name;
+	TempData["currency"] = Model.user.Currency;
+	TempData["Qid"] = Model.question.Id;
+}
+
+@*@if(Model.user.Id==0){
+<body onload=' window.location="http://localhost:5000" ; '></body>
+}*@
+<link rel="stylesheet" href="~/css/bootswatchTheme.css" />
+<div class="main-content-header container-fluid d-flex d-row justify-content-between align-items-center p-2">
+	<pantrast class="title">@ViewData["title"]</pantrast>
+@*
+	@using (Html.BeginForm()) 
+	
+	
+{
+	
+	@Html.AntiForgeryToken()
+	<namequestion> @Html.DisplayFor(Question => Model.question.fk_User)'s question</namequestion>
+	
+	}*@
+	</div>
+	<namequestion> @Html.DisplayFor(Question => Model.question.fk_User)'s topic</namequestion>
+<div class="container-fluid d-flex justify-content-center">
+	<div class="divTable blueTable">
+<div class="divTableHeading">
+<div class="divTableRow">
+<div class="divTableHead">@Html.DisplayFor(Question => Model.question.Questions)</div>
+</div>
+</div>
+<div class="divTableBody">
+<div class="divTableRow">
+<div class="divTableCell">@Html.DisplayFor(Question => Model.question.Content)</div>
+</div>
+</div>
+</div>
+
+
+</div>
+@if(Model.user.Id==0){
+	<a href="http://localhost:5000/User/Login" class="btn btn-outline-danger" role="button">Login to create a comment</a>
+	
+}
+else if(Model.question.topAnswer == 0){
+	<a href="@Url.Action("Create", "Answer", new { q = Model.question.Questions, id = Model.question.Id })" class="btn btn-warning"><i class="fa-solid fa-pen-to-square">Create new comment</a>
+}
+else{
+	<h1 style="color:black">This question is locked</h1>
+}
+@if(Model.answers.Count>0){
+<div>
+	<table class="entitylist table table-striped table-hover">
+		<thead>
+			<tr>
+				<th>
+					<antrast>User</antrast>
+
+				</th>
+				<th>
+					<antrast>Answer</antrast>
+					<a href="@Url.Action("Content","Question", new {id=Model.question.Id, n = 3})"  role="button">sort by date</a>
+				</th>
+				<th>
+					
+					<a href="@Url.Action("Content","Question", new {id=Model.question.Id, n = 1})"  role="button">sort by likes</a>
+				</th>
+				<th>
+					<a href="@Url.Action("Content","Question", new {id=Model.question.Id, n = 2})"  role="button">sort by dislikes</a>
+
+				</th>
+				@*<th>
+					@Html.DisplayNameFor(Question => Question.Content)
+				</th>*@
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model.answers){
+				@if(item.best==1){
+					<thead>
+					  <tr>
+				<td>
+          <atskls>
+			  		<p>Best comment:</p>
+					  @Html.DisplayFor(Answer => item.fk_User) 
+           </atskls>
+				</td>
+				<td>
+          <atskls>
+					    @Html.DisplayFor(Answer => item.Answers)
+           </atskls>
+				</td>
+				<td>
+          <atskls>
+					@Html.DisplayFor(Answer => item.Likes)
+					@if(Model.user.Id==0){
+						<a href="http://localhost:5000/User/Login"  role="button"><img src="/images/like.png" alt="like" width="20" height="auto"></a>
+					}
+					else{
+						<a href="@Url.Action("Like", "Answer", new { id = item.Id, idq = Model.question.Id, AnswerUserId = item.fk_User})" > <img src="/images/like.png" alt="like" width="20" height="auto"></a>
+					}
+            	</atskls>
+				</td>
+				<td>
+         		<atskls>
+					@Html.DisplayFor(Answer => item.Dislikes)
+					@if(Model.user.Id==0){
+						<a href="http://localhost:5000/User/Login"  role="button"><img src="/images/dislike.png" alt="dislike" width="20" height="auto"></a>
+					}
+					else{
+						<a href="@Url.Action("Dislike", "Answer", new { id = item.Id, idq = Model.question.Id, AnswerUserId = item.fk_User})" > <img src="/images/dislike.png" alt="dislike" width="20" height="auto"></a>
+					}
+           		</atskls>
+				   <th>
+					@if(Model.user.Name==item.fk_User || Model.user.Name == "admin"){
+						@*<a href="@Url.Action("Delete","Answer", new { id1 = item.Id, id = Model.question.Id, q = Model.question.Questions} )" style="float: right;" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i> Delete</a>
+						<a href="@Url.Action("Edit","Answer", new { id1 = item.Id, id = Model.question.Id, q = Model.question.Questions} )" style="float: right;" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i> Edit</a>*@
+					<a href="@Url.Action("Delete","Answer", new { id = item.Id, idQ = Model.question.Id} )" style="float: right;" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Delete</a>
+					<a href="@Url.Action("Edit","Answer", new { id1 = item.Id, id = Model.question.Id, q = Model.question.Questions} )" style="float: right;" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+					}
+				</th>
+				</thead>	  
+				}
+			}
+			@foreach (var item in Model.answers){
+				@if(item.fk_User==Model.user.Name){
+					<thead>
+					  <tr>
+				<td>
+          <atskls>
+					  @Html.DisplayFor(Answer => item.fk_User) 
+           </atskls>
+				</td>
+				<td>
+          <atskls>
+					    @Html.DisplayFor(Answer => item.Answers)
+           </atskls>
+				</td>
+				<td>
+          <atskls>
+					@Html.DisplayFor(Answer => item.Likes)
+					@if(Model.user.Id==0){
+						<a href="http://localhost:5000/User/Login"  role="button"><img src="/images/like.png" alt="like" width="20" height="auto"></a>
+					}
+					else{
+						<a href="@Url.Action("Like", "Answer", new { id = item.Id, idq = Model.question.Id, AnswerUserId = item.fk_User})" > <img src="/images/like.png" alt="like" width="20" height="auto"></a>
+					}
+            	</atskls>
+				</td>
+				<td>
+         		<atskls>
+					@Html.DisplayFor(Answer => item.Dislikes)
+					@if(Model.user.Id==0){
+						<a href="http://localhost:5000/User/Login"  role="button"><img src="/images/dislike.png" alt="dislike" width="20" height="auto"></a>
+					}
+					else{
+						<a href="@Url.Action("Dislike", "Answer", new { id = item.Id, idq = Model.question.Id, AnswerUserId = item.fk_User})" > <img src="/images/dislike.png" alt="dislike" width="20" height="auto"></a>
+					}
+           		</atskls>
+				   <th>
+					@if(Model.user.Name==item.fk_User || Model.user.Name=="admin"){
+						@*<a href="@Url.Action("Delete","Answer", new { id1 = item.Id, id = Model.question.Id, q = Model.question.Questions} )" style="float: right;" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i> Delete</a>
+						<a href="@Url.Action("Edit","Answer", new { id1 = item.Id, id = Model.question.Id, q = Model.question.Questions} )" style="float: right;" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i> Edit</a>*@
+					<a href="@Url.Action("Delete","Answer", new { id = item.Id, idQ = Model.question.Id} )" style="float: right;" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Delete</a>
+					<a href="@Url.Action("Edit","Answer", new { id1 = item.Id, id = Model.question.Id, q = Model.question.Questions} )" style="float: right;" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+					}
+				</th>
+				</thead>	  
+				}
+			}
+		@foreach (var item in Model.answers) {
+			<thead>
+				@if(Model.user.Name!=item.fk_User && item.best==0){
+				<tr>
+				<td>
+          <atskls>
+					  @Html.DisplayFor(Answer => item.fk_User) 
+           </atskls>
+				</td>
+				<td>
+          <atskls>
+					    @Html.DisplayFor(Answer => item.Answers)
+           </atskls>
+				</td>
+				<td>
+          <atskls>
+					@Html.DisplayFor(Answer => item.Likes)
+					@if(Model.user.Id==0){
+						<a href="http://localhost:5000/User/Login"  role="button"><img src="/images/like.png" alt="like" width="20" height="auto"></a>
+					}
+					else{
+						<a href="@Url.Action("Like", "Answer", new { id = item.Id, idq = Model.question.Id, AnswerUserId = item.fk_User})" > <img src="/images/like.png" alt="like" width="20" height="auto"></a>
+					}
+            	</atskls>
+				</td>
+				<td>
+         		<atskls>
+					@Html.DisplayFor(Answer => item.Dislikes)
+					@if(Model.user.Id==0){
+						<a href="http://localhost:5000/User/Login"  role="button"><img src="/images/dislike.png" alt="dislike" width="20" height="auto"></a>
+					}
+					else{
+						<a href="@Url.Action("Dislike", "Answer", new { id = item.Id, idq = Model.question.Id, AnswerUserId = item.fk_User})" > <img src="/images/dislike.png" alt="dislike" width="20" height="auto"></a>
+					}
+           		</atskls>
+				</td>
+				<td>
+          		<atskls>
+					  @if(Model.user.Name==Model.question.fk_User && Model.question.topAnswer==0 && Model.user.Name!=item.fk_User){
+						  <a href="@Url.Action("Mark", new {AnswerId = item.Id})" class="btn btn-warning"> Mark as the best comment</a>
+					  }
+				</atskls>
+				</td>
+
+				@*<th>
+					@Html.DisplayNameFor(Question => Question.Content)
+				</th>*@
+				<th>
+					@if(Model.user.Name==item.fk_User || Model.user.Name=="admin"){
+						@*<a href="@Url.Action("Delete","Answer", new { id1 = item.Id, id = Model.question.Id, q = Model.question.Questions} )" style="float: right;" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i> Delete</a>
+						<a href="@Url.Action("Edit","Answer", new { id1 = item.Id, id = Model.question.Id, q = Model.question.Questions} )" style="float: right;" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i> Edit</a>*@
+					<a href="@Url.Action("Delete","Answer", new { id = item.Id, idQ = Model.question.Id} )" style="float: right;" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Delete</a>
+					<a href="@Url.Action("Edit","Answer", new { id1 = item.Id, id = Model.question.Id, q = Model.question.Questions} )" style="float: right;" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+					}
+				</th>
+			</tr>
+			}
+		</thead>
+		}
+	</table>
+</div>
+
+}
+else
+{
+	<noanswer>No comments yet</noanswer>
+}
+<div class="main-content-footer container-fluid d-flex d-row justify-content-between align-items-center">
+	<span class="title"></span>
+	<span class="actions">
+		<a href="@Url.Action("Index")" class="btn btn-success"><i class="fa-solid fa-angles-left"></i> Back to list</a>
+	</span>
+</div>

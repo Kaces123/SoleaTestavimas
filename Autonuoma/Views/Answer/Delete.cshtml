@@ -1,0 +1,61 @@
+@model Org.Ktu.Isk.P175B602.Autonuoma.ViewModels.Answers
+@{
+	ViewData["title"] = "Delete comment";
+	TempData["id"] = Model.user.Id;
+	TempData["id1"] = Model.user.Id;
+	TempData["name"] = Model.user.Name;
+	TempData["currency"] = Model.user.Currency;
+}
+
+<div class="main-content-header container-fluid d-flex d-row justify-content-between align-items-center">
+	<pantrast class="title">@ViewData["title"]</pantrast>
+</div>
+
+<div class="container-fluid d-flex justify-content-center">
+@using (Html.BeginForm()) 
+{
+	@Html.AntiForgeryToken()
+
+	@Html.HiddenFor(m => m.answer.Likes)
+	@Html.HiddenFor(m => m.answer.Dislikes)
+	@Html.HiddenFor(m => m.answer.Id)
+	@Html.HiddenFor(m => m.answer.fk_User)
+	@Html.HiddenFor(m => m.answer.fk_Questions)
+
+
+	<fieldset class="border rounded shadow p-2">
+		<legend style="color: red;" class="text-center">You sure you want to delete your comment?</legend>
+
+		<dl>
+
+            <dt>@Html.DisplayNameFor(m => m.answer.Answers)</dt>
+			<dd>@Html.DisplayFor(m => m.answer.Answers)</dd>
+
+		</dl>
+
+		@if( ViewData["deletionNotPermitted"] != null )
+		{
+			<div class="alert alert-warning text-center">
+				<i class="fa-solid fa-circle-exclamation"></i> This comment cannot be deleted.
+			</div>
+		}
+		else
+		{
+			<div class="container-fluid d-flex d-row justify-content-end">
+				<button
+					formaction="@Url.Action("DeleteConfirm", new {id = Model.answer.Id, idQ=@TempData["Qid"]})"
+					class="btn btn-danger"
+					style="white-space: nowrap;"
+				><i class="fa-solid fa-trash"></i> Remove</button>
+			</div>			
+		}
+	</fieldset>
+}
+</div>
+
+<div class="main-content-footer container-fluid d-flex d-row justify-content-between align-items-center">
+	<span class="title"></span>
+	<span class="actions">
+		<a href="@Url.Action("Index", "Question")" class="link-primary"><i class="fa-solid fa-angles-left"></i>Back to list</a>
+	</span>
+</div>

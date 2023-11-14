@@ -1,0 +1,136 @@
+@model Org.Ktu.Isk.P175B602.Autonuoma.ViewModels.QuestionsLog
+@{
+	ViewData["title"] = "Topics";
+	TempData["id"] = Model.user.Id;
+	TempData["id1"] = Model.user.Id;
+	TempData["name"] = Model.user.Name;
+	TempData["currency"] = Model.user.Currency;
+}
+@*@if(Model.user.Id==0){
+<body onload=' window.location="http://localhost:5000" ; '></body>
+}*@
+<link rel="stylesheet" href="~/css/bootswatchTheme.css" />
+
+<div class="main-content-header container-fluid d-flex d-row justify-content-between align-items-center p-2">
+	<pantrast class="title">@ViewData["title"]</pantrast>
+	@*<input type="text" placeholder="Search.." id="search">
+	<input type="submit" value="Search" formaction="Search" fommethod="post"/>
+	@*<button type="submit" formaction="@Url.Action("Create")">Submit</button>
+	<input type="submit" value="Search" formaction="Content" fommethod="post" >*@
+	<form href="@Url.Action("Search", "Question")">
+      <input type="text" placeholder="Search by topic name..." name="search">
+      <button type="submit"  ><img src="/images/magnifier.png" alt="search" width="20" height="auto"></button>
+	  @*<input type="image" src="/images/magnifier.png" width="30" height="auto"  alt="search">*@
+    </form>
+	@*<div class="container-fluid d-flex d-row justify-content-end">
+		<button name="Search" value="1" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+	</div>*@
+	@if(Model.user.Id==0){
+		<a href="http://localhost:5000/User/Login" class="btn btn-outline-danger" role="button">Login to create a topic</a>
+	}
+	else if(Model.user.Currency>=100){
+		<span class="actions">
+			<a href="@Url.Action("Create")" class="btn btn-warning"><i class="fa-solid fa-plus"></i> Create new topic</a>
+		</span>
+	}
+	else if(Model.user.Name=="admin"){
+	<a href="@Url.Action("Index", "User")" style="float: right;" class="btn btn-info"><i class="fa-solid fa-pen-to-square"></i>Show users</a>
+	}
+	else{
+		<span class="actions">
+			<p style="color:black"> To create a new topic, you need to have at least one golden coin</p>
+		</span>
+	}
+	@if(Model.user.Name=="admin"){
+	<a href="@Url.Action("Index", "User")" style="float: right;" class="btn btn-info"><i class="fa-solid fa-pen-to-square"></i>Show users</a>
+}
+</div>
+<div class="d-flex justify-content-center">
+	<table class="entitylist table table-striped table-hover">
+		<thead>
+			<tr>
+				<th>
+					<antrast>User </antrast>
+				</th>
+				<th>
+					<antrast>Topic </antrast>
+					<a href="@Url.Action("Index","Question", new { n = 3})"  role="button">sort by date</a>
+				</th>
+				<th>
+					<a href="@Url.Action("Index","Question", new { n = 1})"  role="button">sort by likes</a>
+				</th>
+				<th>
+					<a href="@Url.Action("Index","Question", new { n = 2})"  role="button">sort by dislikes</a>
+				</th>
+				@*<th>
+					@Html.DisplayNameFor(Question => Question.Content)
+				</th>*@
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model.question) {
+			<tr>
+				<td>
+					<atskls>
+							@Html.DisplayFor(Question => item.fk_User)
+							
+					</atskls>
+				</td>
+				<td>
+					<atskls>
+							@Html.DisplayFor(Question => item.Questions)
+							
+					</atskls>
+					
+				</td>
+				<td>
+					<atskls>
+							@Html.DisplayFor(Question => item.Likes)
+
+							@if(Model.user.Id==0){
+								<a href="http://localhost:5000/User/Login"  role="button"><img src="/images/like.png" alt="like" width="20" height="auto"></a>
+							}
+							else{
+								<a href="@Url.Action("Like", new { id = item.Id, QuestiondUserId=item.fk_User})" > <img src="/images/like.png" alt="like" width="20" height="auto"></a>
+							}
+      				</atskls>
+				</td>
+				<td>
+					<atskls>
+							@Html.DisplayFor(Question => item.Dislikes)
+
+							@if(Model.user.Id==0){
+								<a href="http://localhost:5000/User/Login"  role="button"><img src="/images/dislike.png" alt="dislike" width="20" height="auto"></a>
+							}
+							else{
+								<a href="@Url.Action("Dislike", new { id = item.Id, QuestiondUserId=item.fk_User})" > <img src="/images/dislike.png" alt="dislike" width="20" height="auto"></a>
+							}
+					</atskls>	
+				</td>
+				@*<td>
+					@Html.DisplayFor(Question => item.Content)
+				</td>*@
+				
+				<td>
+					
+					<a href="@Url.Action("Content", new { id = item.Id })" style="float: right;" class="btn btn-info"><i class="fa-solid fa-pen-to-square"></i>Show content</a>
+					@if(Model.user.Name == "admin" && item.topAnswer == 0){
+						<a href="@Url.Action("Lock", new { id = item.Id })" style="float: right;" class="btn btn-info"><i class="fa-solid fa-pen-to-square"></i>Lock topic</a>
+					}
+					else if(Model.user.Name == "admin" && item.topAnswer == 1){
+						<a href="@Url.Action("Unlock", new { id = item.Id })" style="float: right;" class="btn btn-info"><i class="fa-solid fa-pen-to-square"></i>Unlock topic</a>
+					}
+					@*<a href="@Url.Action("Deletee", new { id = item.Id })" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Remove</a>*@
+					@if(Model.user.Name==item.fk_User || Model.user.Name == "admin"){
+						<a href="@Url.Action("Delete", new { id = item.Id })" style="float: right;" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Remove</a>
+						<a href="@Url.Action("Edit", new { id = item.Id})" style="float: right;" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+					}
+					@*<a href="@Url.Action("Delete", new { id = item.Id })" style="float: right;" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Remove</a>*@
+				</td>
+			</tr>
+			}
+		</tbody>
+	</table>
+</div>
+}
