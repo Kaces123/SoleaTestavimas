@@ -63,6 +63,8 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma
                 builder.Services.AddRazorPages();
 
 				builder.Services.AddScoped<IUserRepo, UserRepo>();
+				         builder.Services.AddScoped<IAnswerRepo, AnswerRepo>(); // Add this line
+                builder.Services.AddScoped<ILikedRepo, LikedRepo>();
 
 				//build the app
                 var app = builder.Build();
